@@ -1,0 +1,104 @@
+HTML:
+
+With the help of the starter code, I managed the code by carefully editing certain parts of the code to make sure that it was compatiable with style.css and javascript.
+
+In the body of the html, I added two paragraph ids to ensure the importance of the date to change every day and include the time as well.
+
+<body>
+    <header class="p-5 mb-4">
+      <h1 class="display-3">Work Day Scheduler</h1>
+      <p class="lead">A simple calendar app for scheduling your work day</p>
+      <p id="currentHour" class="lead"></p>
+      <p id="currentTime"></p>
+      <p>Date: <input type="text" id="datepicker"></p>
+    </header>
+
+    At the bottom of the html, I added Day.js within the script code because I was having difficulties linking script.js to index.html and the only way it flowed well was with day.js.
+
+    <script src="
+    https://cdn.jsdelivr.net/npm/dayjs@1.11.7/dayjs.min.js
+    "></script>
+
+style.css:
+I am not sure why the rows get shorter as the time goes towards the p.m., but I started messing with the colors and I am able to type into the boxes and click the save button.
+
+script.js :
+
+First, I started with making sure that todays date and time appear on the top of the website, obviously I wasnt able to configure both the date and time to flow naturally on its own. I also made a save button to have whatever I type be converted to data. 
+
+var todayDate = moment().format("dddd, MMMM Do YYYY");
+$("#currentHour").html(todayDate);
+$(document).ready(function () {
+  $(".save-button").on("click", function () {
+    console.log(this);
+    var text = $(this).siblings(".description").val();
+    var time = $(this).parent().attr("id");
+
+    localStorage.setItem(time, text);
+  });
+
+  Then, I used timeTracker to log in the thoughts of the past, present and future so that it would automatically move the color-coded rows based on what how much time has pasted. 
+
+  function timeTracker() {
+    var currentHour = moment().hour();
+    var timeNow = moment().hour();
+    $(".time-block").each(function () {
+      var blockTime = parseInt($(this)).attr("id").split("hour")[1];
+      if (blockTime < timeNow) {
+        $(this).addClass("past");
+        $(this).removeClass("future");
+        $(this).removeClass("present");
+      } else if (blockTime === timeNow) {
+        $(this).removeClass("past");
+        $(this).addClass("present");
+        $(this).removeClass("future");
+      } else {
+        $(this).removeClass("present");
+        $(this).removeClass("past");
+        $(this).addClass("future");
+      }
+    });
+
+    function changeClass(jQueryObj) {
+      $(jQueryObj).addClass("past");
+    }
+
+    console.log(calenderContainer);
+    calenderContainer.on("click", ".save-button");
+
+    function saveCalenderEvent(event) {
+      var saveRow = $(event.target).parent();
+      var rowId = saveRow.attr("id");
+
+      var textToSave = saveRow.children(".description").eq(0).val();
+      localStorage.setItem(rowId, textToSave);
+      console.log(saveRow.children(".description").eq(0).val());
+    }
+ 
+  In order for javacript to understand the concept of time, I had individually added how many hours flow through an entire day. Well at least from 9am to 6pm. 
+
+  $("#hour9 .description").val(localStorage.getItem("hour9"));
+    $("#hour10 .description").val(localStorage.getItem("hour10"));
+    $("#hour11 .description").val(localStorage.getItem("hour11"));
+    $("#hour12 .description").val(localStorage.getItem("hour12"));
+    $("#hour13 .description").val(localStorage.getItem("hour1"));
+    $("#hour14 .description").val(localStorage.getItem("hour2"));
+    $("#hour15 .description").val(localStorage.getItem("hour3"));
+    $("#hour16 .description").val(localStorage.getItem("hour4"));
+    $("#hour17 .description").val(localStorage.getItem("hour5"));
+    $("#hour18 .description").val(localStorage.getItem("hour6"));
+  }
+  
+  At the end, I placed in code to ensure that no matter what time it is, it would always keep track of time.
+
+  timeTracker();
+});
+
+
+
+
+
+
+
+Links:
+
